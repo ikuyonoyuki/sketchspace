@@ -3,6 +3,8 @@ Line line1,line2;
 
 LineSagment s1 ,s2;
 
+///+++++++/////
+
 void setup(){
   size(600,400);
   background(22,22,28);
