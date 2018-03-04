@@ -1,6 +1,25 @@
-// Minim を使用する準備です
-import ddf.minim.analysis.*;
-import ddf.minim.*;
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import ddf.minim.analysis.*; 
+import ddf.minim.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class gene_04 extends PApplet {
+
+// Minim \u3092\u4f7f\u7528\u3059\u308b\u6e96\u5099\u3067\u3059
+
+
 Minim minim;
 
 AudioInput in;
@@ -14,8 +33,8 @@ int wide =4;
 float moverote = 0;
 
 
-void setup(){
-  size(300,300,P3D);
+public void setup(){
+  
   frameRate(30);
   //colorMode(ADD);
   rectMode(CENTER);
@@ -34,17 +53,17 @@ void setup(){
 
 /*
   for (int i = 0; i < NUM; i++) {
-   //パーティクルをインスタンス化
+   //\u30d1\u30fc\u30c6\u30a3\u30af\u30eb\u3092\u30a4\u30f3\u30b9\u30bf\u30f3\u30b9\u5316
    particles[i] = new ParticleVec2();
-   //初期位置を設定
+   //\u521d\u671f\u4f4d\u7f6e\u3092\u8a2d\u5b9a
    particles[i].position.set(0, random(height/3));
-   //摩擦力を設定
+   //\u6469\u64e6\u529b\u3092\u8a2d\u5b9a
    particles[i].friction = 0.002;
-   //質量を設定
+   //\u8cea\u91cf\u3092\u8a2d\u5b9a
     particles[i].mass = 1.0;
-   //半径を設定
+   //\u534a\u5f84\u3092\u8a2d\u5b9a
    particles[i].radius = 1.5;
-   //円形にランダムになるよう力を加える
+   //\u5186\u5f62\u306b\u30e9\u30f3\u30c0\u30e0\u306b\u306a\u308b\u3088\u3046\u529b\u3092\u52a0\u3048\u308b
    float length = random(1);
    float angle = random(-PI/2,0);
    particles[i].addForce(new PVector(length*cos(angle), length*sin(angle)));
@@ -52,11 +71,11 @@ void setup(){
  */
 }
 
-void draw(){
+public void draw(){
   //background(0);
   fill(0, 15);
   rect(width/2, height/2, width, height);
-  // 以下描画処理
+  // \u4ee5\u4e0b\u63cf\u753b\u51e6\u7406
 
 
   //FFT analysis
@@ -68,7 +87,7 @@ void draw(){
   float max = 0;
   /*
   for (int i = 0; i < specSize; i++){
-    // x をスペクトラム幅に応じた位置として取得します
+    // x \u3092\u30b9\u30da\u30af\u30c8\u30e9\u30e0\u5e45\u306b\u5fdc\u3058\u305f\u4f4d\u7f6e\u3068\u3057\u3066\u53d6\u5f97\u3057\u307e\u3059
     float x = map(i, 0, specSize, 0, width);
     line(x, center, x, center - fft.getBand(i) * 4);
     line(x, center, x, center + fft.getBand(i) * 4);
@@ -108,7 +127,7 @@ void draw(){
 
     int alph = 0;
     if(fft.getBand(i)<100){
-       alph = int(map(fft.getBand(i),0,100,0,80));
+       alph = PApplet.parseInt(map(fft.getBand(i),0,100,0,80));
     }else if(fft.getBand(i)>=100){
        alph = 100;
     }
@@ -124,9 +143,9 @@ void draw(){
   /*
   fill(255);
   for (int i = 0; i < NUM; i++) {
-    //パーティクルの位置を更新
+    //\u30d1\u30fc\u30c6\u30a3\u30af\u30eb\u306e\u4f4d\u7f6e\u3092\u66f4\u65b0
     particles[i].update();
-    //パーティクルを描画
+    //\u30d1\u30fc\u30c6\u30a3\u30af\u30eb\u3092\u63cf\u753b
     particles[i].draw();
   }
   drawband();
@@ -138,20 +157,20 @@ void draw(){
 
 }
 
-moverote += 0.003;
+moverote += 0.003f;
 //saveFrame("frames/######.tif");
 }
 
 
-void stop(){
+public void stop(){
   minim.stop();
   super.stop();
 }
 
-void drawband(){
+public void drawband(){
   float interval = height/3;
   stroke(0,0,255);
-  strokeWeight(0.2);
+  strokeWeight(0.2f);
   line(0,interval*0,width,interval*0);
   line(0,interval*1,width,interval*1);
   line(0,interval*2,width,interval*2);
@@ -160,41 +179,41 @@ void drawband(){
 
 //-------------- class ---------------///
 
-//パーティクルクラス
+//\u30d1\u30fc\u30c6\u30a3\u30af\u30eb\u30af\u30e9\u30b9
 class ParticleVec2 {
-  PVector position;        //位置
-  PVector velocity;       //速度
-  PVector acceleration;   //加速度
-  float radius;           //パーティクルの半径
-  float friction;         //摩擦
-  float mass;             //質量
+  PVector position;        //\u4f4d\u7f6e
+  PVector velocity;       //\u901f\u5ea6
+  PVector acceleration;   //\u52a0\u901f\u5ea6
+  float radius;           //\u30d1\u30fc\u30c6\u30a3\u30af\u30eb\u306e\u534a\u5f84
+  float friction;         //\u6469\u64e6
+  float mass;             //\u8cea\u91cf
 
-  //コンストラクター
+  //\u30b3\u30f3\u30b9\u30c8\u30e9\u30af\u30bf\u30fc
   ParticleVec2() {
-    //初期パラメーターを設定
-    radius = 4.0;
-    position = new PVector(width/2.0, height/2.0);
+    //\u521d\u671f\u30d1\u30e9\u30e1\u30fc\u30bf\u30fc\u3092\u8a2d\u5b9a
+    radius = 4.0f;
+    position = new PVector(width/2.0f, height/2.0f);
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
-    friction = 0.0;
+    friction = 0.0f;
   }
 
-  void addForce(PVector force) {
-    //質量から加速度を計算 (a = f/m);
+  public void addForce(PVector force) {
+    //\u8cea\u91cf\u304b\u3089\u52a0\u901f\u5ea6\u3092\u8a08\u7b97 (a = f/m);
     force.div(mass);
     acceleration.add(force);
   }
 
-  //座標の更新
-  void update() {
-    velocity.add(acceleration);     //速度に加速度を加算
-    velocity.mult(1.0 - friction);  //摩擦力を加味した速度を計算
-    position.add(velocity);         //速度から位置を算出
-    acceleration.set(0, 0);         //加速度をリセット
+  //\u5ea7\u6a19\u306e\u66f4\u65b0
+  public void update() {
+    velocity.add(acceleration);     //\u901f\u5ea6\u306b\u52a0\u901f\u5ea6\u3092\u52a0\u7b97
+    velocity.mult(1.0f - friction);  //\u6469\u64e6\u529b\u3092\u52a0\u5473\u3057\u305f\u901f\u5ea6\u3092\u8a08\u7b97
+    position.add(velocity);         //\u901f\u5ea6\u304b\u3089\u4f4d\u7f6e\u3092\u7b97\u51fa
+    acceleration.set(0, 0);         //\u52a0\u901f\u5ea6\u3092\u30ea\u30bb\u30c3\u30c8
   }
 
-  //パーティクルを描画
-  void draw() {
+  //\u30d1\u30fc\u30c6\u30a3\u30af\u30eb\u3092\u63cf\u753b
+  public void draw() {
     ellipse(position.x, position.y, radius * 2, radius * 2);
   }
 }
@@ -206,21 +225,31 @@ class ParticleVec2 {
 //screenshot
 int count = 1;
 
-void keyPressed() {
+public void keyPressed() {
 
-  // Pのキーが入力された時に保存
+  // P\u306e\u30ad\u30fc\u304c\u5165\u529b\u3055\u308c\u305f\u6642\u306b\u4fdd\u5b58
   if(key == 'p' || key == 'P') {
 
-    // デスクトップのパスを取得
+    // \u30c7\u30b9\u30af\u30c8\u30c3\u30d7\u306e\u30d1\u30b9\u3092\u53d6\u5f97
     String path  = System.getProperty("user.home") + "/Desktop/screenshot" + count + ".jpg";
 
-    // 保存
+    // \u4fdd\u5b58
     save(path);
 
-    // 番号を加算
+    // \u756a\u53f7\u3092\u52a0\u7b97
     count++;
 
-    // ログ用途
+    // \u30ed\u30b0\u7528\u9014
     println("screen saved." + path);
+  }
+}
+  public void settings() {  size(300,300,P3D); }
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "gene_04" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
   }
 }

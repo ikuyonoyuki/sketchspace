@@ -16,7 +16,7 @@ float moverote = 0;
 
 
 void setup(){
-  size(2220,213,P3D);
+  size(300,300,P3D);
   frameRate(30);
 
   rectMode(CENTER);
@@ -169,5 +169,29 @@ class ParticleVec2 {
     noStroke();
     fill(255,alpha);
     ellipse(position.x, position.y, radius * 1, radius * 1);
+  }
+}
+
+
+
+//screenshot
+int count = 1;
+
+void keyPressed() {
+
+  // Pのキーが入力された時に保存
+  if(key == 'p' || key == 'P') {
+
+    // デスクトップのパスを取得
+    String path  = System.getProperty("user.home") + "/Desktop/screenshot" + count + ".jpg";
+
+    // 保存
+    save(path);
+
+    // 番号を加算
+    count++;
+
+    // ログ用途
+    println("screen saved." + path);
   }
 }
